@@ -11,6 +11,7 @@
 						<li>常见问题</li>
 						<li>购物指南</li>
 					</ul>
+
 				</div>
 				<div class="footerItem">
 					<h4>配送方式</h4>
@@ -93,6 +94,7 @@
 			</div>
 		</div>
 	</div>
+
 </template>
 
 <script>
