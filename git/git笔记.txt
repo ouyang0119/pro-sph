@@ -24,7 +24,7 @@ git log --oneline   	查看提交的历史记录（精简）
 git add ./  	将修改加入暂存区（先到版本库再到暂存区）
 git rm 		文件名 删除工作目录中对应的文件 再将修改添加到暂存区
 git mv 		旧文件名 新文件名 将工作目录中的文件进行重命名 再将修改添加到暂存区
-git commit -m 	“注释信息” 将暂存区提交到版本库
+git commit -m '' 	将暂存区提交到版本库
 git commit -a 	跳过暂存区直接提交
 git log --oneline --decorate --graph --all			查看项目分叉历史
 git config --global alias.(别名) “命令(一个单词不要引号)“	修改别名
