@@ -8,6 +8,10 @@ Vue.component(TypeNav.name,TypeNav);
 
 import router from "./router";
 
+import {reqCategoryList} from './api';
+
+reqCategoryList();
+
 new Vue({
 	render: h => h(App),
 	router
