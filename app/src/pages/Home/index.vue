@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<TypeNav></TypeNav>
+		<TypeNav/>
 		<ListContainer/>
 		<Recommend/>
 		<Rank/>
@@ -18,10 +18,15 @@
 	import Like from './Like'
 	import Floor from './Floor'
 	import Brand from './Brand'
-	export default{
-		name:"",
-		components:{
-			ListContainer,Recommend,Rank,Like,Floor,Brand
+	export default {
+		name: "",
+		components: {
+			ListContainer,
+			Recommend,
+			Rank,
+			Like,
+			Floor,
+			Brand
 		}
 	};
 </script>
