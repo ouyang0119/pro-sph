@@ -42,7 +42,7 @@ export default new VueRouter({
 			show: true
 		}
 	}, {
-		path: "/search/:keyword",
+		path: "/search/:keyword?",
 		component: Search,
 		meta: {
 			show: true
@@ -61,7 +61,7 @@ export default new VueRouter({
 			show: false
 		}
 	}, {
-		path: '*',
+		path: '/',
 		redirect: '/home'
 	}]
 })
