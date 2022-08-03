@@ -1,6 +1,6 @@
 <template>
 	<div class="type-nav">
-		<div class="container" @mouseleave="leaveIndex">
+		<div class="container" @mouseleave="leaveShow" @mouseenter="enterShow">
 			<h2 class="all">全部商品分类</h2>
 			<nav class="nav">
 				<a href="###">服装城</a>
@@ -12,32 +12,34 @@
 				<a href="###">有趣</a>
 				<a href="###">秒杀</a>
 			</nav>
-			<div class="sort">
-				<div class="all-sort-list2" @click="goSearch">
-					<div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId" :class="{cur:currentIndex==index}">
-						<h3 @mouseenter="changeIndex(index)">
-							<a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
-							<!-- <router-link to="/search">{{c1.categoryName}}</router-link> -->
-						</h3>
-						<div class="item-list clearfix" :style="{display:currentIndex==index?'block':'none'}">
-							<div class="subitem" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
-								<dl class="fore">
-									<dt>
-										<a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
-										<!-- <router-link to="/search">{{c2.categoryName}}</router-link> -->
-									</dt>
-									<dd>
-										<em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-											<a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
-											<!-- <router-link to="/search">{{c3.categoryName}}</router-link> -->
-										</em>
-									</dd>
-								</dl>
+			<transition name="sort">
+				<div class="sort" v-show="show">
+					<div class="all-sort-list2" @click="goSearch">
+						<div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId" :class="{cur:currentIndex==index}">
+							<h3 @mouseenter="changeIndex(index)">
+								<a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
+								<!-- <router-link to="/search">{{c1.categoryName}}</router-link> -->
+							</h3>
+							<div class="item-list clearfix" :style="{display:currentIndex==index?'block':'none'}">
+								<div class="subitem" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
+									<dl class="fore">
+										<dt>
+											<a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
+											<!-- <router-link to="/search">{{c2.categoryName}}</router-link> -->
+										</dt>
+										<dd>
+											<em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+												<a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+												<!-- <router-link to="/search">{{c3.categoryName}}</router-link> -->
+											</em>
+										</dd>
+									</dl>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</transition>
 		</div>
 	</div>
 </template>
@@ -51,11 +53,14 @@
 		name: "TypeNav",
 		data() {
 			return {
-				currentIndex: -1
+				currentIndex: -1,
+				show: true,
 			}
 		},
 		mounted() {
-			this.$store.dispatch('categoryList');
+			if (this.$route.path != "/home") {
+				this.show = false;
+			}
 		},
 		computed: {
 			...mapState({
@@ -65,26 +70,45 @@
 		methods: {
 			changeIndex: throttle(function(index) {
 				this.currentIndex = index
-				console.log(index)
 			}, 100),
-			leaveIndex() {
-				this.currentIndex = -1
+			leaveShow() {
+				this.currentIndex = -1;
+				if (this.$route.path != "/home") {
+					this.show = false;
+				}
 			},
-			goSearch(event){
-				let element=event.target
-				let {categoryname,category1id,category2id,category3id}=element.dataset
-				if(categoryname){
-					let location={name:'search'};
-					let query={categoryName:categoryname};
-					if(category1id){
-						query.category1Id=category1id
-					}else if(category2id){
-						query.category2Id=category2id
-					}else{
-						query.category3Id=category3id
+			goSearch(event) {
+				let element = event.target
+				let {
+					categoryname,
+					category1id,
+					category2id,
+					category3id
+				} = element.dataset
+				if (categoryname) {
+					let location = {
+						name: 'search'
+					};
+					let query = {
+						categoryName: categoryname
+					};
+					if (category1id) {
+						query.category1Id = category1id
+					} else if (category2id) {
+						query.category2Id = category2id
+					} else {
+						query.category3Id = category3id
 					}
-					location.query=query
-					this.$router.push(location)
+					if(this.$route.params){
+						location.params=this.$route.params;
+						location.query = query;
+						this.$router.push(location);
+					}
+				}
+			},
+			enterShow() {
+				if (this.$route.path != "/home") {
+					this.show = true;
 				}
 			}
 		}
@@ -212,6 +236,19 @@
 						background-color: skyblue;
 					}
 				}
+			}
+
+			.sort-enter {
+				height: 0;
+			}
+
+			.sort-enter-to {
+				height: 461px;
+			}
+
+			.sort-enter-active {
+				transition: all .5s linear;
+				overflow: hidden;
 			}
 		}
 	}
