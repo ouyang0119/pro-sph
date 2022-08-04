@@ -1,6 +1,9 @@
-import requests from './request'
+import requests from './request';
 
-export const reqCategoryList = () => requests({
-	url: '/product/getBaseCategoryList',
-	method: 'get'
-});
+import mockRequests from './mockAjax';
+
+export const reqCategoryList = () => requests.get('/product/getBaseCategoryList');
+
+export const reqGetBannerList = () => mockRequests.get('/banner');
+
+
