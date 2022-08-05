@@ -4,7 +4,11 @@ import App from './App.vue';
 
 import TypeNav from './components/TypeNav';
 
+import Carsousel from './components/Carsousel';
+
 Vue.component(TypeNav.name,TypeNav);
+
+Vue.component(Carsousel.name,Carsousel);
 
 import router from "./router";
 
