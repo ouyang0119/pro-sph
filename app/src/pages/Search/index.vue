@@ -118,15 +118,40 @@
 	} from 'vuex'
 	export default {
 		name: 'Search',
+		data() {
+			return{
+				searchParams: {
+					category1Id: "",
+					category2Id: "",
+					category3Id: "",
+					categoryName: "",
+					keyword: "",
+					props: [],
+					trademark: "",
+					order: "",
+					pageNo: 1,
+					pageSize: 10,
+				}
+			}
+		},
 		components: {
 			SearchSelector
 		},
+		beforeMount() {
+			// console.log(this.$route.query)
+			Object.assign(this.searchParams,this.$route.query,this.$route.params)
+		},
 		mounted() {
-			this.$store.dispatch('getSearchList')
+			this.getData();
 		},
 		computed: {
-			...mapGetters(["goodsList"])
+			...mapGetters(["goodsList","trademarkList","attrsList"])
 		},
+		methods: {
+			getData() {
+				this.$store.dispatch('getSearchList', this.searchParams);
+			}
+		}
 	}
 </script>
 
