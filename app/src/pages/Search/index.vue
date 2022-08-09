@@ -11,10 +11,7 @@
 						</li>
 					</ul>
 					<ul class="fl sui-tag">
-						<li class="with-x">手机</li>
-						<li class="with-x">iphone<i>×</i></li>
-						<li class="with-x">华为<i>×</i></li>
-						<li class="with-x">OPPO<i>×</i></li>
+						<li class="with-x" v-if="this.searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
 					</ul>
 				</div>
 
@@ -150,6 +147,23 @@
 		methods: {
 			getData() {
 				this.$store.dispatch('getSearchList', this.searchParams);
+			},
+			removeCategoryName(){
+				this.searchParams.categoryName=undefined;
+				this.searchParams.category1Id=undefined;
+				this.searchParams.category2Id=undefined;
+				this.searchParams.category3Id=undefined;
+				this.getData();
+			}
+		},
+		watch:{
+			$route(newValue,oldValue){
+				this.searchParams.category1Id='';
+				this.searchParams.category2Id='';
+				this.searchParams.category3Id='';
+				Object.assign(this.searchParams,this.$route.query,this.$route.params);
+				this.getData();
+				
 			}
 		}
 	}
