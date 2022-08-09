@@ -4,7 +4,7 @@
 			<div class="fl key brand">品牌</div>
 			<div class="value logos">
 				<ul class="logo-list">
-					<li v-for="trademark in trademarkList" :key="trademark.tmId">{{trademark.tmName}}</li>
+					<li v-for="trademark in trademarkList" :key="trademark.tmId" @click="tradeMarkHandler(trademark)">{{trademark.tmName}}</li>
 				</ul>
 			</div>
 			<div class="ext">
@@ -16,7 +16,7 @@
 			<div class="fl key">{{attr.attrName}}</div>
 			<div class="fl value">
 				<ul class="type-list">
-					<li v-for="(attrValue,index) in attr.attrValueList" :key="index">
+					<li v-for="(attrValue,index) in attr.attrValueList" :key="index" @click="attrInfo(attr,attrValue)">
 						<a>{{attrValue}}</a>
 					</li>
 				</ul>
@@ -34,6 +34,14 @@
 		name: 'SearchSelector',
 		computed:{
 			...mapGetters(["trademarkList","attrsList"])
+		},
+		methods:{
+			tradeMarkHandler(trademark){
+				this.$emit("trademarkInfo",trademark);
+			},
+			attrInfo(attr,attrValue){
+				this.$emit("attrInfo",attr,attrValue);
+			}
 		}
 	}
 </script>

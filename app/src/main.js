@@ -6,9 +6,9 @@ import TypeNav from './components/TypeNav';
 
 import Carsousel from './components/Carsousel';
 
-Vue.component(TypeNav.name,TypeNav);
+Vue.component(TypeNav.name, TypeNav);
 
-Vue.component(Carsousel.name,Carsousel);
+Vue.component(Carsousel.name, Carsousel);
 
 import router from "./router";
 
@@ -19,7 +19,9 @@ import "swiper/css/swiper.css"
 import '@/mock/mockServe';
 new Vue({
 	render: h => h(App),
+	beforeCreate() {
+		Vue.prototype.$bus = this;
+	},
 	router,
 	store
 }).$mount("#app");
-

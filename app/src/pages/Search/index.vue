@@ -12,11 +12,14 @@
 					</ul>
 					<ul class="fl sui-tag">
 						<li class="with-x" v-if="this.searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
+						<li class="with-x" v-if="this.searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">x</i></li>
+						<li class="with-x" v-if="this.searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTradeMark">x</i></li>
+						<li class="with-x" v-for="(attrValue,index) in searchParams.props" :key="index">{{attrValue.split(":")[1]}}<i @click="removeAttr(index)">x</i></li>
 					</ul>
 				</div>
 
 				<!--selector-->
-				<SearchSelector />
+				<SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo"/>
 
 				<!--details-->
 				<div class="details clearfix">
@@ -116,7 +119,7 @@
 	export default {
 		name: 'Search',
 		data() {
-			return{
+			return {
 				searchParams: {
 					category1Id: "",
 					category2Id: "",
@@ -136,34 +139,67 @@
 		},
 		beforeMount() {
 			// console.log(this.$route.query)
-			Object.assign(this.searchParams,this.$route.query,this.$route.params)
+			Object.assign(this.searchParams, this.$route.query, this.$route.params)
 		},
 		mounted() {
 			this.getData();
 		},
 		computed: {
-			...mapGetters(["goodsList","trademarkList","attrsList"])
+			...mapGetters(["goodsList", "trademarkList", "attrsList"])
 		},
 		methods: {
 			getData() {
 				this.$store.dispatch('getSearchList', this.searchParams);
 			},
-			removeCategoryName(){
-				this.searchParams.categoryName=undefined;
-				this.searchParams.category1Id=undefined;
-				this.searchParams.category2Id=undefined;
-				this.searchParams.category3Id=undefined;
+			removeCategoryName() {
+				this.searchParams.categoryName = undefined;
+				this.searchParams.category1Id = undefined;
+				this.searchParams.category2Id = undefined;
+				this.searchParams.category3Id = undefined;
+				this.getData();
+				this.$router.push({
+					name: "search",
+					params: this.$route.params
+				});
+			},
+			removeKeyword() {
+				this.searchParams.keyword = undefined;
+				this.getData();
+				this.$bus.$emit("clear");
+				this.$router.push({
+					name: "search",
+					query: this.$route.query
+				});
+
+			},
+			trademarkInfo(trademark) {
+				this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+				this.getData();
+			},
+			removeTradeMark() {
+				this.searchParams.trademark = undefined
+				this.getData();
+			},
+			attrInfo(attr,attrValue){
+				let props=`${attr.attrId}:${attrValue}:${attr.attrName}`;
+				if(this.searchParams.props.indexOf(props)==-1){
+					this.searchParams.props.push(props);
+				}
+				this.getData();
+			},
+			removeAttr(index){
+				this.searchParams.props.splice(index,1);				
 				this.getData();
 			}
 		},
-		watch:{
-			$route(newValue,oldValue){
-				this.searchParams.category1Id='';
-				this.searchParams.category2Id='';
-				this.searchParams.category3Id='';
-				Object.assign(this.searchParams,this.$route.query,this.$route.params);
+		watch: {
+			$route(newValue, oldValue) {
+				this.searchParams.category1Id = '';
+				this.searchParams.category2Id = '';
+				this.searchParams.category3Id = '';
+				Object.assign(this.searchParams, this.$route.query, this.$route.params);
 				this.getData();
-				
+
 			}
 		}
 	}
