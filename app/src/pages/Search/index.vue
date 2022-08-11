@@ -41,9 +41,9 @@
 							<li class="yui3-u-1-5" v-for="good in goodsList" :key="good.id">
 								<div class="list-wrap">
 									<div class="p-img">
-										<a href="item.html" target="_blank">
+										<router-link :to="`/detail/${good.id}`">
 											<img :src="good.defaultImg" />
-										</a>
+										</router-link>
 									</div>
 									<div class="price">
 										<strong>
@@ -65,12 +65,8 @@
 							</li>
 						</ul>
 					</div>
-					<Pagination 
-					:pageNo="searchParams.pageNo" 
-					:pageSize="searchParams.pageSize" 
-					:total="total" 
-					:continues="5" 
-					@getPageNo="getPageNo"/>
+					<Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5"
+					 @getPageNo="getPageNo" />
 				</div>
 			</div>
 		</div>
@@ -80,7 +76,8 @@
 <script>
 	import SearchSelector from './SearchSelector/SearchSelector'
 	import {
-		mapGetters,mapState
+		mapGetters,
+		mapState
 	} from 'vuex'
 	export default {
 		name: 'Search',
@@ -124,7 +121,9 @@
 			isDesc() {
 				return this.searchParams.order.indexOf("desc") != -1;
 			},
-			...mapState({total:state=>state.search.searchList.total})
+			...mapState({
+				total: state => state.search.searchList.total
+			})
 		},
 		methods: {
 			getData() {
@@ -180,11 +179,11 @@
 				} else {
 					newOrder = `${flag}:${"desc"}`;
 				}
-				this.searchParams.order=newOrder;
+				this.searchParams.order = newOrder;
 				this.getData();
 			},
-			getPageNo(pageNo){
-				this.searchParams.pageNo=pageNo;
+			getPageNo(pageNo) {
+				this.searchParams.pageNo = pageNo;
 				this.getData();
 			},
 		},

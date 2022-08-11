@@ -10,6 +10,6 @@ export const reqGetFloorList = () => mockRequests.get('/floor');
 
 export const reqGetSearchInfo = (params) => requests({url:"/list",method:"post",data:params});
 
-
+export const reqGoodsInfo = (skuId)=>requests({url:`/item/${skuId}`,method:'get'});
 
 

@@ -6,7 +6,7 @@ import TypeNav from './components/TypeNav';
 
 import Carsousel from './components/Carsousel';
 
-import Pagination from './components/Pagination'
+import Pagination from './components/Pagination';
 
 Vue.component(TypeNav.name, TypeNav);
 
