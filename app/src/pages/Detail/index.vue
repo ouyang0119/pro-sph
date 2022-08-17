@@ -77,7 +77,7 @@
 								<a href="javascript:" class="mins" @click="skuNum--">-</a>
 							</div>
 							<div class="add">
-								<a href="javascript:">加入购物车</a>
+								<a @click="addShopcar">加入购物车</a>
 							</div>
 						</div>
 					</div>
@@ -328,16 +328,16 @@
 </template>
 
 <script>
-	import ImageList from './ImageList/ImageList' 
+	import ImageList from './ImageList/ImageList'
 	import Zoom from './Zoom/Zoom'
 	import {
 		mapGetters
 	} from 'vuex'
 	export default {
 		name: 'Detail',
-		data(){
-			return{
-				skuNum:1,
+		data() {
+			return {
+				skuNum: 1,
 			}
 		},
 		components: {
@@ -360,12 +360,32 @@
 					saleAttrValue.isChecked = 1;
 				})
 			},
-			changeSkuNum(event){
-				let value=event.target.value*1;
-				if(!value||value<1){
-					this.skuNum=1;
-				}else{
-					this.skuNum=parseInt(value);
+			changeSkuNum(event) {
+				let value = event.target.value * 1;
+				if (!value || value < 1) {
+					this.skuNum = 1;
+				} else {
+					this.skuNum = parseInt(value);
+				}
+			},
+			async addShopcar() {
+				// //发请求
+				// let result =await this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNum:this.skuNum})
+				// console.log(result)
+				try {
+					await this.$store.dispatch('addOrUpdateShopCart', {
+						skuId: this.$route.params.skuid,
+						skuNum: this.skuNum
+					});
+					sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo));
+					this.$router.push({
+						name: 'addcartsuccess',
+						query: {
+							skuNum: this.skuNum
+						}
+					});
+				} catch (e) {
+					alert(e.message)
 				}
 			}
 		}
