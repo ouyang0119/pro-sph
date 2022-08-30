@@ -109,6 +109,6 @@ git push origin xxx 提交本地仓库文件到远程仓库（后期简化版本）
 
 
 git clone git@github.com:308655673/xiangmu.git
-克隆远程仓库
+克隆远程仓库git clone git@https://github.com/ouyang0119/pro-sph.git
 git pull origin xxx:yyy 抓取远程xxx分支到本地并合并到yyy分支（合并分支）
 git fetch <远程主机名> <分支名>  抓取远程xxx分支到本地（不合分支）
